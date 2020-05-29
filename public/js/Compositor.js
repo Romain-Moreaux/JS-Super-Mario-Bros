@@ -9,15 +9,3 @@ export default class Compositor {
     })
   }
 }
-
-// export default function Compositor() {
-//   const layers = []
-
-//   function draw(context) {
-//     layers.forEach((layer) => {
-//       layer(context)
-//     })
-//   }
-
-//   return { layers, draw }
-// }
