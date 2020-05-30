@@ -33,15 +33,5 @@ Promise.all([createMario(), loadBackgroundSprites(), loadLevel('1-1')]).then(
       mario.vel.y += gravity
     }
     timer.start()
-
-    // setInterval(
-    //   () => {
-    //     comp.draw(context)
-    //     mario.update(1 / 60)
-    //     mario.vel.y += gravity
-    //   },
-    //   1000 / 60,
-    //   performance.now()
-    // )
   }
 )
