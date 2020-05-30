@@ -4,10 +4,7 @@ import { loadBackgroundSprites } from './sprites.js'
 import { createBackgroundLayer, createSpritesLayer } from './layers.js'
 import { createMario } from './entities.js'
 import Timer from './Timer.js'
-
-window.addEventListener('keydown', (event) => {
-  console.log(event)
-})
+import Keyboard from './KeyboardState.js'
 
 const canvas = document.getElementById('screen')
 const context = canvas.getContext('2d')
@@ -26,9 +23,21 @@ Promise.all([createMario(), loadBackgroundSprites(), loadLevel('1-1')]).then(
     comp.layers.push(spritesLayer)
 
     const gravity = 2000
-
     mario.pos.set(64, 180)
-    mario.vel.set(200, -600)
+    // mario.vel.set(200, -600)
+
+    const SPACE = 32
+    const input = new Keyboard()
+    input.addMaping(SPACE, (keyState) => {
+      console.log('Mario jumped', keyState)
+      if (keyState) {
+        mario.jump.start()
+      } else {
+        mario.jump.cancel()
+      }
+    })
+
+    input.listenTo(window)
 
     const timer = new Timer(1 / 60)
     timer.update = function update(deltaTime) {
