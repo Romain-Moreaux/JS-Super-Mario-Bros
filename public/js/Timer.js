@@ -18,6 +18,7 @@ export default class Timer {
   }
 
   enqueue() {
+    // setTimeout(this.updateProxy, 1 / 60, performance.now()) // fake requestAnimationFrame (for debug purpose only)
     requestAnimationFrame(this.updateProxy)
   }
 

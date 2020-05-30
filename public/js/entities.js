@@ -6,7 +6,6 @@ export function createMario() {
     const mario = new Entity()
 
     mario.draw = function drawMario(context) {
-      console.log('draw mario')
       sprite.draw('idle', context, this.pos.x, this.pos.y)
     }
 
