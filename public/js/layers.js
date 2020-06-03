@@ -1,16 +1,41 @@
 export function createBackgroundLayer(level, sprites) {
+  const tiles = level.tiles
+  const resolver = level.tileCollider.tiles
+
   const buffer = document.createElement('canvas')
-  buffer.width = 2048
+  buffer.width = 256 + 16
   buffer.height = 240
 
   const context = buffer.getContext('2d')
+  let startIndex, endIndex
+  function redraw(drawFrom, drawTo) {
+    if (drawFrom === startIndex && drawTo === endIndex) {
+      return
+    }
+    startIndex = drawFrom
+    endIndex = drawTo
 
-  level.tiles.forEach((tile, x, y) => {
-    sprites.drawTile(tile.name, context, x, y)
-  })
+    console.log('redrawing')
+
+    for (let x = startIndex; x <= endIndex; x++) {
+      const col = tiles.grid[x]
+      if (col) {
+        col.forEach((tile, y) => {
+          // shift the buffer according to the rest of the modulo
+          sprites.drawTile(tile.name, context, x - startIndex, y)
+        })
+      }
+    }
+  }
 
   return function drawBackgroundLayer(context, camera) {
-    context.drawImage(buffer, -camera.pos.x, -camera.pos.y)
+    const drawWidth = resolver.toIndex(camera.size.x)
+    const drawFrom = resolver.toIndex(camera.pos.x)
+    const drawTo = drawFrom + drawWidth
+
+    redraw(drawFrom, drawTo)
+    //  modulo 16 create fake visible layer with the buffered layout
+    context.drawImage(buffer, -camera.pos.x % 16, -camera.pos.y)
   }
 }
 
